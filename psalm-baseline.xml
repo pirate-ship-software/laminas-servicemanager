@@ -218,10 +218,6 @@
       <code>$factory</code>
       <code><![CDATA[(callable(ContainerInterface,string,array<mixed>|null):object)|Factory\FactoryInterface]]></code>
     </MixedReturnTypeCoercion>
-    <ParamNameMismatch>
-      <code>$name</code>
-      <code>$name</code>
-    </ParamNameMismatch>
     <RedundantCastGivenDocblockType>
       <code>(bool) $flag</code>
       <code>(bool) $flag</code>

@@ -23,7 +23,7 @@
     "require": {
         "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
         "laminas/laminas-stdlib": "^3.17",
-        "psr/container": "^1.0"
+        "psr/container": "^1.1 || ^2.0"
     },
     "require-dev": {
         "composer/package-versions-deprecated": "^1.11.99.5",
@@ -37,9 +37,6 @@
         "psalm/plugin-phpunit": "^0.18.4",
         "vimeo/psalm": "^5.8.0"
     },
-    "replace": {
-        "container-interop/container-interop": "^1.2.0"
-    },
     "conflict": {
         "ext-psr": "*",
         "laminas/laminas-code": "<4.10.0",
@@ -47,7 +44,7 @@
         "zendframework/zend-servicemanager": "*"
     },
     "provide": {
-        "psr/container-implementation": "^1.0"
+        "psr/container-implementation": "^1.0 || ^2.0"
     },
     "suggest": {
         "friendsofphp/proxy-manager-lts": "ProxyManager ^2.1.1 to handle lazy initialization of services"

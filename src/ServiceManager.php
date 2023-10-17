@@ -219,34 +219,34 @@ class ServiceManager implements ServiceLocatorInterface
     }
 
     /** {@inheritDoc} */
-    public function get($name)
+    public function get(string $id): mixed
     {
         // We start by checking if we have cached the requested service;
         // this is the fastest method.
-        if (isset($this->services[$name])) {
-            return $this->services[$name];
+        if (isset($this->services[$id])) {
+            return $this->services[$id];
         }
 
         // Determine if the service should be shared.
-        $sharedService = $this->shared[$name] ?? $this->sharedByDefault;
+        $sharedService = $this->shared[$id] ?? $this->sharedByDefault;
 
         // We achieve better performance if we can let all alias
         // considerations out.
         if (! $this->aliases) {
-            $object = $this->doCreate($name);
+            $object = $this->doCreate($id);
 
             // Cache the object for later, if it is supposed to be shared.
             if ($sharedService) {
-                $this->services[$name] = $object;
+                $this->services[$id] = $object;
             }
             return $object;
         }
 
         // We now deal with requests which may be aliases.
-        $resolvedName = $this->aliases[$name] ?? $name;
+        $resolvedName = $this->aliases[$id] ?? $id;
 
         // Update shared service information as we checked if the alias was shared before.
-        if ($resolvedName !== $name) {
+        if ($resolvedName !== $id) {
             $sharedService = $this->shared[$resolvedName] ?? $sharedService;
         }
 
@@ -255,7 +255,7 @@ class ServiceManager implements ServiceLocatorInterface
 
         // If the alias is configured as a shared service, we are done.
         if ($sharedAlias) {
-            $this->services[$name] = $this->services[$resolvedName];
+            $this->services[$id] = $this->services[$resolvedName];
             return $this->services[$resolvedName];
         }
 
@@ -271,7 +271,7 @@ class ServiceManager implements ServiceLocatorInterface
         // Also cache under the alias name; this allows sharing based on the
         // service name used.
         if ($sharedAlias) {
-            $this->services[$name] = $object;
+            $this->services[$id] = $object;
         }
 
         return $object;
@@ -291,10 +291,10 @@ class ServiceManager implements ServiceLocatorInterface
      * @param string|class-string $name
      * @return bool
      */
-    public function has($name)
+    public function has(string $id): bool
     {
         // Check static services and factories first to speedup the most common requests.
-        return $this->staticServiceOrFactoryCanCreate($name) || $this->abstractFactoryCanCreate($name);
+        return $this->staticServiceOrFactoryCanCreate($id) || $this->abstractFactoryCanCreate($id);
     }
 
     /**

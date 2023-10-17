@@ -143,7 +143,6 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
 
     /**
      * @param class-string<InstanceType>|string $name Service name of plugin to retrieve.
-     * @param null|array<mixed> $options Options to use when creating the instance.
      * @return mixed
      * @psalm-return ($name is class-string<InstanceType> ? InstanceType : mixed)
      * @throws Exception\ServiceNotFoundException If the manager does not have
@@ -152,21 +151,21 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
      * @throws InvalidServiceException If the plugin created is invalid for the
      *     plugin context.
      */
-    public function get($name, ?array $options = null)
+    public function get(string $id): mixed
     {
-        if (! $this->has($name)) {
-            if (! $this->autoAddInvokableClass || ! class_exists($name)) {
+        if (! $this->has($id)) {
+            if (! $this->autoAddInvokableClass || ! class_exists($id)) {
                 throw new Exception\ServiceNotFoundException(sprintf(
                     'A plugin by the name "%s" was not found in the plugin manager %s',
-                    $name,
+                    $id,
                     static::class
                 ));
             }
 
-            $this->setFactory($name, Factory\InvokableFactory::class);
+            $this->setFactory($id, Factory\InvokableFactory::class);
         }
 
-        $instance = ! $options ? parent::get($name) : $this->build($name, $options);
+        $instance = parent::get($id);
         $this->validate($instance);
         return $instance;
     }
